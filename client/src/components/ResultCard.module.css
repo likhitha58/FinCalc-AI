@@ -1,0 +1,76 @@
+.card {
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon { font-size: 1.1rem; }
+
+.title {
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+/* ── Primary metric ──────────────────────────────────────────── */
+.primary {
+  border-top: 1px solid;
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.primaryLabel {
+  font-size: .8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.primaryValue {
+  font-size: 1.55rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  letter-spacing: -.02em;
+}
+
+/* ── Detail rows ─────────────────────────────────────────────── */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.row:last-child { border-bottom: none; }
+
+.rowLabel {
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+
+.rowValue {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
