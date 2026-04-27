@@ -30,8 +30,14 @@ async function chat(req, res) {
   history.push({ role: "user", content: message.trim() });
 
   try {
-    const { reply, toolUsed, toolResult } = await runAgentTurn(history);
-    history.push({ role: "assistant", content: reply });
+    const { reply, toolUsed, toolResult, updatedMessages } = await runAgentTurn(history);
+    
+    // Replace the history with the fully updated conversation
+    if (updatedMessages) {
+      sessions.set(sid, updatedMessages);
+    } else {
+      history.push({ role: "assistant", content: reply });
+    }
 
     return res.json({
       success: true,

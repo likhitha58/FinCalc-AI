@@ -282,9 +282,13 @@ const TOOL_SCHEMAS = [
 function executeTool(toolName, args) {
   const fn = TOOL_MAP[toolName];
   if (!fn) {
-    throw new Error(`Unknown tool '${toolName}'. Available: ${Object.keys(TOOL_MAP).join(", ")}`);
+    return { error: `Unknown tool '${toolName}'. Available: ${Object.keys(TOOL_MAP).join(", ")}` };
   }
-  return fn(args);
+  try {
+    return fn(args);
+  } catch (err) {
+    return { error: err.message, note: "Please ask the user for the missing or invalid inputs." };
+  }
 }
 
 module.exports = { TOOL_MAP, TOOL_SCHEMAS, executeTool };
