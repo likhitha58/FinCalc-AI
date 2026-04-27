@@ -21,10 +21,10 @@ Large Language Models are powerful conversational agents — but they **hallucin
 | Concern | Handled By |
 |---|---|
 | Understanding the user's question | LLM (LLaMA 3.1) |
-| Performing the math | Deterministic Python functions |
+| Performing the math | Deterministic JavaScript functions |
 | Explaining the result | LLM (LLaMA 3.1) |
 
-The LLM **never fabricates a number**. Every calculation is delegated to a verified Python function via structured **tool calling**, and the result is returned to the model for clear, natural-language explanation.
+The LLM **never fabricates a number**. Every calculation is delegated to a verified JavaScript function via structured **tool calling**, and the result is returned to the model for clear, natural-language explanation.
 
 **Result:** Financial answers you can actually trust.
 
@@ -32,13 +32,14 @@ The LLM **never fabricates a number**. Every calculation is delegated to a verif
 
 ## Key Features
 
-- **Function Calling Architecture** — The LLM invokes typed Python functions instead of guessing arithmetic.
+- **Function Calling Architecture** — The LLM invokes typed JavaScript functions instead of guessing arithmetic.
 - **5 Financial Calculators** — EMI, Simple Interest, SIP Returns, Loan Amortization, and Max Loan Eligibility.
 - **Natural Language I/O** — Ask questions in plain English; get clear, jargon-free explanations.
-- **Anti-Hallucination Guardrails** — A strict system prompt ensures the model never manually computes or fabricates numbers.
+- **Multi-Turn Context Memory** — Seamlessly recalls user-provided parameters across chat turns.
+- **Anti-Hallucination Guardrails** — A strict system prompt ensures the model never manually computes numbers and actively suppresses internal reasoning leakage.
 - **Robust Fallback Parsing** — If the model emits a tool call as raw JSON instead of a structured call, the engine still catches and executes it.
 - **Output Sanitization** — Leaked JSON, mode labels, and internal artifacts are stripped before the user sees anything.
-- **Modular & Extensible** — Add a new financial function in minutes: write the Python function, add its schema, register it in the tool map.
+- **Modular & Extensible** — Add a new financial function in minutes: write the JavaScript tool, add its schema, register it in the tool map.
 
 ---
 
@@ -112,7 +113,7 @@ sequenceDiagram
 1. **User asks a financial question** in natural language.
 2. **LLM identifies the computation** needed and selects the appropriate function.
 3. **Agent engine dispatches the tool call** — either from a structured `tool_calls` response or by parsing JSON leaked in the text (fallback).
-4. **Python function executes** with validated inputs and returns formatted results.
+4. **JavaScript tool executes** with validated inputs and returns formatted results.
 5. **LLM receives the result** and crafts a clear, friendly explanation — no raw numbers, no JSON, no jargon.
 6. **Sanitized response** is displayed to the user.
 
@@ -225,10 +226,10 @@ Calculates the **maximum loan a person can afford** based on income, using the 5
 
 | Component | Technology |
 |---|---|
-| **Language** | Python 3.10+ |
+| **Frontend** | React, Tailwind CSS |
+| **Backend** | Node.js, Express |
 | **LLM** | LLaMA 3.1 (8B) |
-| **Inference Runtime** | [Ollama](https://ollama.com/) (local) |
-| **LLM Client** | [`ollama-python`](https://github.com/ollama/ollama-python) |
+| **Inference Runtime** | [Ollama](https://ollama.com/) (local HTTP API) |
 | **Tool Calling** | Native Ollama tool schemas + regex fallback parser |
 
 ---
@@ -237,42 +238,38 @@ Calculates the **maximum loan a person can afford** based on income, using the 5
 
 ### Prerequisites
 
-- **Python 3.10+** installed
+- **Node.js (v16+)** and npm installed
 - **Ollama** installed and running ([Download Ollama](https://ollama.com/download))
 - **LLaMA 3.1** model pulled locally
 
-### 1. Clone the Repository
+### 1. Clone the Repository & Setup LLaMA
 
 ```bash
-git clone https://github.com/<your-username>/FinCalc-AI.git
+git clone https://github.com/likhitha58/FinCalc-AI.git
 cd FinCalc-AI
-```
 
-### 2. Install Dependencies
-
-```bash
-pip install ollama
-```
-
-### 3. Pull the LLaMA 3.1 Model
-
-```bash
+# Make sure LLaMA 3.1 is pulled and Ollama is running
 ollama pull llama3.1
 ```
 
-### 4. Run the Assistant
+### 2. Start the Backend Server
 
 ```bash
-python financial_assistant.py
+cd server
+npm install
+npm start
 ```
+The server will run on `http://localhost:5000`.
 
-You'll see:
+### 3. Start the Frontend Client
 
+Open a new terminal window:
+```bash
+cd client
+npm install
+npm start
 ```
-Financial Assistant (llama3.1) — type 'exit' to quit.
-
-You: _
-```
+The React app will open automatically at `http://localhost:3000`.
 
 ---
 
